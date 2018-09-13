@@ -6,6 +6,7 @@ public class RatMovement : MonoBehaviour {
 	//public facing variables
 	public float P_maxAngVelDeg;
 	public float P_maxVelocity;
+	public float P_rotationSmoothing;
 	public Vector3 rotationVector;
 
 	// Use this for initialization
@@ -20,9 +21,11 @@ public class RatMovement : MonoBehaviour {
 
 	void applyVelocity(){
 		if (Input.GetAxis("Horizontal") != 0){
-			rotationVector = (Quaternion.Euler (0, (Input.GetAxis ("Horizontal") * P_maxAngVelDeg), 0) * rotationVector).normalized;
-			Debug.Log (rotationVector);
+			Quaternion rotation = Quaternion.Euler (0, (Input.GetAxis ("Horizontal") * P_maxAngVelDeg), 0);
+			rotationVector = (rotation * rotationVector).normalized;
 		}
-		this.transform.position += (rotationVector * P_maxVelocity * Time.deltaTime);
+		Vector3 projectedPosition = this.transform.position + (rotationVector * P_maxVelocity * Time.deltaTime);
+		this.transform.LookAt (projectedPosition);
+		this.transform.position = projectedPosition;
 	}
 }
