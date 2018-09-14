@@ -3,24 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraControl : MonoBehaviour {
-
-	public Transform anchor;
-	public float horizObl;
-	public float vertObl; 
-	public float zFromAnchor;
-	public float yFromAnchor;
-	private Vector3 updatedCameraPosition;
+	[Tooltip("Oblique projection")]
+	public float P_horizObl;
+	public float P_vertObl; 
+	[Tooltip("The point at which the camera will follow. A normalized Vector local to parent")]
+	public Vector3 P_cameraTarget;
+	[Tooltip("Scaler for cameraTarget")]
+	public float P_camZoom;
+	[Tooltip("How sensitive the camera is to changes in parent position")]
+	public float P_camSnap;
+	[Tooltip("How fast the camera pivots in radians")]
+	public float P_camSpeed;
 
 	// Use this for initialization
 	void Start () {
-		SetObliqueness (horizObl, vertObl);
+		SetObliqueness (P_horizObl, P_vertObl);
 	}
 
 	// Update is called once per frame
 	void Update () {
-		updatedCameraPosition = anchor.position + new Vector3 (0, yFromAnchor, zFromAnchor);
-		Camera.main.transform.position = updatedCameraPosition;
-		Camera.main.transform.LookAt (anchor.position);
+
 	}
 
 	void SetObliqueness(float horizObl, float vertObl) {
